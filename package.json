@@ -1,0 +1,15 @@
+{
+  "name": "economist-world-ahead-audio-downloader",
+  "type": "module",
+  "version": "1.0.0",
+  "description": "MIT",
+  "scripts": {
+    "start": "node index.js"
+  },
+  "license": "MIT",
+  "dependencies": {
+    "dotenv": "^16.0.3",
+    "invariant": "^2.2.4",
+    "playwright": "^1.29.1"
+  }
+}
