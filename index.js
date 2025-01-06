@@ -73,16 +73,6 @@ const main = async () => {
 
   await page.goto("https://www.economist.com/");
 
-  // Accept all cookies
-  try {
-    await page
-      .frameLocator('internal:attr=[title="SP Consent Message"i]')
-      .getByRole("button", { name: "Accept all" })
-      .click();
-  } catch (error) {
-    console.log(error);
-  }
-
   // Sign in
   await page.goto(ECONOMIST_AUTH_URL);
   await page.getByLabel("*Email address").click();
@@ -91,7 +81,7 @@ const main = async () => {
 
   await page.getByLabel("*Password").fill(ECONOMIST_PASSWORD);
   await page.getByRole("button", { name: "Log in" }).click();
-  await page.waitForNavigation();
+  await page.waitForURL("https://www.economist.com/");
 
   // Go to the World Ahead page
   await page.goto(SOURCE_PAGE);
@@ -115,17 +105,16 @@ const main = async () => {
 
   // Download all files
   const failed = [];
-  for (let i = 0; i < filteredLinks.length; i += 5) {
-    await Promise.allSettled(
-      filteredLinks.slice(i, i + 5).map(async (link, index) => {
-        try {
-          await downloadFile(context, link, i + index);
-        } catch (error) {
-          console.error(error);
-          failed.push(link);
-        }
-      })
-    );
+  for (const [idx, link] of filteredLinks.entries()) {
+    try {
+      await downloadFile(context, link, idx);
+    } catch (error) {
+      console.error(error);
+      failed.push(link);
+    }
+
+    // Wait for 20 seconds
+    await page.waitForTimeout(20_000);
   }
 
   console.log(`Failed to download ${failed.length} files`);

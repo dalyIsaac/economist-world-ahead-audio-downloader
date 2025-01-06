@@ -8,8 +8,8 @@
   },
   "license": "MIT",
   "dependencies": {
-    "dotenv": "^16.0.3",
+    "dotenv": "^16.4.7",
     "invariant": "^2.2.4",
-    "playwright": "^1.29.1"
+    "playwright": "^1.49.1"
   }
 }
